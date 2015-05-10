@@ -155,6 +155,7 @@ app.use sessionStore
 jsonParser = bodyParser.json()
 
 app.use '/dist', express.static('dist')
+app.use '/audio', express.static('src/audio')
 app.use '/bower_components', express.static('bower_components')
 
 # assign the swig engine to .html files 
@@ -211,7 +212,7 @@ doIfHasRole = (id, allowedRoles, req, res, next, cb) ->
 			return next(err)
 		return cb(id, role, req, res, next)
 
-getKeyFromId = (roomID, sid, recID) -> ([roomID, sid, recID].join '/') + '.webm'
+getKeyFromId = (roomID, sid, recID) -> ([roomID, sid, recID].join '/') + '.wav'
 checkKeyIsValid = (key) -> key.indexOf(id + '/' + sid) == 0
 
 app.post '/rooms/:roomID/uploads/', jsonParser, (req, res, next) ->
@@ -226,7 +227,7 @@ app.post '/rooms/:roomID/uploads/', jsonParser, (req, res, next) ->
 		params = 
 			Key: key
 			ACL: 'public-read'
-			ContentType: 'video/webm'
+			ContentType: 'audio/wav'
 		s3UploadsBucket.createMultipartUpload params, (err, data) ->
 			if err
 				return next(err)
@@ -300,7 +301,7 @@ app.post '/rooms/:roomID/uploads/:recID/complete/', jsonParser, (req, res, next)
 			UploadId: req.body.awsUploadId
 			Key: getKeyFromId(req.params.roomID, sid, req.params.recID)
 			MultipartUpload: 
-				Parts: _.map req.body.parts, (etag, partNo) -> {ETag: etag, PartNumber: partNo}
+				Parts: _.map(req.body.parts, (etag, partNo) -> {ETag: etag, PartNumber: partNo})
 
 		s3UploadsBucket.completeMultipartUpload params, (err, data) ->
 			if err
@@ -468,4 +469,4 @@ app.use (err, req, res, next) ->
   console.error(err.stack)
   res.status(500).send('Something broke!')
 
-server.listen(8001)
+server.listen(config.port || 8001)

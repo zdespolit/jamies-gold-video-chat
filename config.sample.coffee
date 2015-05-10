@@ -1,4 +1,5 @@
 module.exports = 
+	#port: 8001,
 	stunservers: [
 		{url: "stun:stun.l.google.com:19302"},
 	]

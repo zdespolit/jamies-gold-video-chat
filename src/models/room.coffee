@@ -1,5 +1,5 @@
 RoomController = require('../room_controller.coffee')
-RecordingController = require('../recording_controller.coffee')
+RecordingController = require('../audio_rec_controller.coffee')
 UserCollection = require('../collections/user.coffee')
 RecordingCollection = require('../collections/recording.coffee')
 User = require('../models/user.coffee')

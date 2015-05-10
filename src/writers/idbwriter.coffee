@@ -30,7 +30,7 @@ class IDBFile
         return new Promise (fulfil, reject) =>
             @readEach(
                 (b) -> blobs.push(b), 
-                -> fulfil(new Blob(blobs, {type: 'video/webm'})),
+                -> fulfil(new Blob(blobs, {type: 'audio/wav'})),
                 reject
             )
 

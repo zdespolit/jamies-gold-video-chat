@@ -302,7 +302,7 @@ class RoomController extends WildEmitter
 			url: window.location.origin,
 			socketio: {}
 			media:
-				video: true
+				video: false
 				audio: true
 			enableDataChannels: true
 			peerConnectionConfig:
@@ -325,9 +325,9 @@ class RoomController extends WildEmitter
 			receiveMedia: 
 				mandatory:
 					OfferToReceiveAudio: true
-					OfferToReceiveVideo: true
+					OfferToReceiveVideo: false
 
-			logger: console
+			logger: mockconsole
 
 
 		@config = _.extend {}, @defaults, config 
@@ -391,7 +391,7 @@ class RoomController extends WildEmitter
 
 	startLocalVideo: (el, cb) ->
 		if not @localMedia.localStreams.length
-			@localMedia.start {video: true, audio: true}, (err, stream) =>
+			@localMedia.start {video: false, audio: true}, (err, stream) =>
 				if err
 					# handle error
 					console.log err
