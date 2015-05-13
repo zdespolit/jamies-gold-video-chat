@@ -1,6 +1,5 @@
 WildEmitter = require('wildemitter')
 webrtcSupport = require('webrtcsupport')
-attachMediaStream = require('attachmediastream')
 mockconsole = require('mockconsole')
 io = require('socket.io-client')
 util = require('util')
@@ -327,7 +326,7 @@ class RoomController extends WildEmitter
 					OfferToReceiveAudio: true
 					OfferToReceiveVideo: false
 
-			logger: mockconsole
+			logger: console
 
 
 		@config = _.extend {}, @defaults, config 
@@ -396,11 +395,7 @@ class RoomController extends WildEmitter
 					# handle error
 					console.log err
 				else
-					attachMediaStream(stream, $(el)[0], 
-						autoplay: true
-						mirror: true
-						muted: true
-					)
+					@emit 'localStreamStart', stream
 					@logger.log "emitting updateResources!"
 					@connection.emit "updateResources", 
 						id: @connection.io.engine.id
@@ -493,6 +488,8 @@ class RoomController extends WildEmitter
 							peer.start()
 
 					fulfil(roomData)
+					if @role != 'peer'
+						@startLocalVideo()
 					@emit 'joinedRoom', @role
 
 	setLocalName: (name) ->

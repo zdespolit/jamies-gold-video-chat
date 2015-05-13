@@ -2,6 +2,7 @@ class DefaultLogView extends Marionette.ItemView
 	# constructor: (data) ->
 	# 	data.template = Handlebars.templates['log-item-' + data.model.get('type')]
 	# 	super data
+	tagName: 'li'	
 
 	template: (ctx) =>
 		mainTpl = Handlebars.templates['log-item']
@@ -18,11 +19,15 @@ class DefaultLogView extends Marionette.ItemView
 			data.fromName = firstAttempt ? @options.parent.roomView.model.historicalClients[data.from].name
 		return data
 
+	onRender: =>
+		@$el.addClass(@model.get('type'))
+
 class RecordingLogView extends DefaultLogView
 	modelEvents:
 		change: 'render'
 
 class LogCollectionView extends Marionette.CollectionView
+	tagName: 'ul'
 	typeViews: 
 		'*': DefaultLogView
 		'recording': RecordingLogView
@@ -37,7 +42,7 @@ class LogCollectionView extends Marionette.CollectionView
 
 	onAddChild: ->
 		# todo: better scrolling, use a jquery plugin or something
-		@roomView.$('div.scroller').scrollTop(@roomView.$('div.scroller ul#logsList').height() + 1000)
+		@roomView.$('.scroller').scrollTop(@roomView.$('.scroller ul').height() + 1000)
 
 class LogView extends Marionette.LayoutView 
 	template: Handlebars.templates['log-panel']

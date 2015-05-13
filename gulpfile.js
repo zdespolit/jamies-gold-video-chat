@@ -44,9 +44,7 @@ gulp.task('templates', function(){
 gulp.task('sass', function() {
   gulp.src('./assets/scss/*.scss')
     .pipe(sass())
-    .on('error', function(err){
-      displayError(err);
-    })
+    .on('error', gutil.log.bind(gutil, 'SCSS Error'))
     .pipe(gulp.dest('./dist/'))
 })
 
@@ -75,5 +73,6 @@ function bundle(bundler) {
       .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
       .pipe(sourcemaps.write('./')) // writes .map file
     //
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('./dist'))
+    .on('end', gutil.log.bind(gutil, 'Rebundled'));
 }

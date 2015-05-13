@@ -7,7 +7,7 @@ class RecordingController extends WildEmitter
 		defaults = 
 			recordingPeriod: 1000
 		@config = _.extend {}, defaults, config
-		@writer = config?.writer ? new IDBWriter 'filesys'
+		@writer = config?.writer ? new IDBWriter 'fireside-000-0'
 		@writer.open()
 
 	addStream: (stream) ->

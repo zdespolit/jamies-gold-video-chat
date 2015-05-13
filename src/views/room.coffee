@@ -20,11 +20,9 @@ class RoomView extends Marionette.LayoutView
 		@showChildView 'log', @logView
 		@showChildView 'users', @usersView
 
+		@model.roomController.on 'localStreamStart', @callView.handleLocalStreamStart
 		@model.roomController.on 'videoAdded', @callView.handleRemoteVideoStart
 		@model.roomController.on 'videoRemoved', @callView.handleRemoteVideoEnd
-		@model.roomController.on 'joinedRoom', (role) =>
-			if role != 'peer'
-				@model.roomController.startLocalVideo(@callView.getVideoEl())
 
 		# really shouldn't be in the view but leave this here for now...
 		join = (n) =>

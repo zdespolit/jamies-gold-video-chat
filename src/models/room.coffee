@@ -99,12 +99,16 @@ class Room extends Backbone.Model
 		@roomController.on "videoRemoved", (peer) =>
 			@userCollection.get(peer.id).set('status', 'connected')
 
-		@roomController.on "joinedRoom", (role) =>
+		@roomController.on "joinedRoom", (role) =>			
+			name = @self.get 'name'
 			@trigger 'setRole', role
 			@self.set 'role', role
 			@logCollection.add
 				type: 'connection'
-				data: 'Joined room.'
+				data: 'You (' + name + ') joined the room.'
+			@logCollection.add
+				type: 'connection'
+				data: 'Waiting for the other participant.'
 
 		@roomController.on "createdPeer", (peer) =>
 			@userCollection.add 
