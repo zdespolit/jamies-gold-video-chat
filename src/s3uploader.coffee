@@ -46,6 +46,7 @@ class S3UploadSession
 
 		@parts = {}
 		numParts = Math.ceil(@blob.size / @uploader.config.partSize)
+		numParts = 1 if numParts == 0
 		for n in [1..numParts]
 			if n == numParts
 				@parts[n] = {size: @blob.size % @uploader.config.partSize}

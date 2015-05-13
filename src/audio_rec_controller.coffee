@@ -18,10 +18,13 @@ class AudioRecordingController extends RecordingController
 
 	stop: =>
 		before = () =>
-			@audioRecorder.stop()
+			@audioRecorder.stop()	
 			@audioRecorder.exportWAV (blob) =>				
 				@saveRecording(blob)
+				@currentRecording.setBlob(blob)
 				@emit('stopped', @currentRecording)
+				@emit('recReady', @currentRecording)
+				@switchState 'ready'
 
 		@switchState 'stopped', before, true
 			

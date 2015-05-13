@@ -17,14 +17,13 @@ class RecordingController extends WildEmitter
 			@switchState 'ready'
 
     
-	switchState: (state, beforeSwitch, wait=false) =>
+	switchState: (state, beforeSwitch) =>
 		unless state == @status
 			beforeSwitch && beforeSwitch.call(@)
 			@status = state
 			if state == 'started' || state == 'stopped'
 				@currentRecording.set state, new Date
-			if not wait
-				@emit state, @currentRecording
+			@emit state, @currentRecording
 
 	saveRecording: (blob) => 
 		# console.log "got blob,", blob.size
@@ -42,7 +41,8 @@ class RecordingController extends WildEmitter
 			@mediaRecorder.start(@config.recordingPeriod)
 
 	stop: ->
-		@switchState 'stopped', () ->
+		@switchState 'stopped', () =>
 			@mediaRecorder.stop()
+			@emit('recordReady', @currentRecording)
 
 module.exports = RecordingController

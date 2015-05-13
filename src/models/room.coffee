@@ -42,8 +42,8 @@ class Room extends Backbone.Model
 			@self.set 'recordingStatus', 'ready'
 
 
-		@recordingController.on 'stopped', (rec) =>
-			rec.upload()
+		@recordingController.on 'recReady', (rec, blob) =>
+			rec.upload(blob)
 			log = null
 
 			@roomController.sendEvent

@@ -4,11 +4,17 @@ s3 = new S3Uploader
 
 class Recording extends Backbone.Model
 	getBlob: (cb) ->
-		writer = new IDBWriter 'fireside-000-0'
-		writer.open().then =>
-			f = writer.getFile @id
-			f.read().then (blob) =>
-				cb(null, blob)
+		if (@_blob)
+			cb(null, @_blob)
+		else
+			writer = new IDBWriter 'fireside-000-0'
+			writer.open().then =>
+				f = writer.getFile @id
+				f.read().then (blob) =>
+					cb(null, blob)
+
+	setBlob: (blob) =>
+		@_blob = blob
 
 	getBlobUrl: (cb) ->
 		@getBlob (err, blob) ->

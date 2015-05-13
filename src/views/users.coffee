@@ -3,10 +3,6 @@ class UserItemView extends Marionette.ItemView
 	template: Handlebars.templates['user-item']
 	modelEvents: 
 		'change': 'render'
-		'change:stream': 'renderAudioLevel'
-
-	renderAudioLevel: () =>
-		debugger
 
 class UserCollectionView extends Marionette.CollectionView
 	tagName: 'ul'
